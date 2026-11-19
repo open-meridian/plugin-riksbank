@@ -1,0 +1,10 @@
+meridian-riksbank
+Copyright 2026 Societal Lab Inc.
+
+Licensed under the Apache License, Version 2.0. See LICENSE.
+
+The data this plugin reads are Sveriges Riksbank's, published through its
+public APIs for interest rates and exchange rates (SWEA) and for SWESTR.
+Source: Sveriges Riksbank. SWESTR is administered by Sveriges Riksbank. The
+government bond yields the Riksbank publishes name Refinitiv as their source.
+This project is not affiliated with or endorsed by Sveriges Riksbank.

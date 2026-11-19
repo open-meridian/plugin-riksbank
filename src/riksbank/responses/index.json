@@ -1,0 +1,18 @@
+{
+  "said": "The Riksbank's real responses, recorded by meridian-riksbank's authors on 2026-11-19 from its public API without a key, each series' answer as received, keyed by the Riksbank's series id and gzipped: SWESTR, its 1-week and 1, 2, 3 and 6-month averages and its index (the SWESTR API), the policy rate (SECBREPOEFF), the 2, 5, 7 and 10-year government bond yields (SEGVB2YC to SEGVB10YC, sourced from Refinitiv) and 29 exchange rates against the krona (SEK<code>PMI), each from 3 August to 19 November 2026, and the exchange rates' latest (group 130). Source: Sveriges Riksbank; SWESTR is administered by Sveriges Riksbank; its data may be used with the Riksbank cited as source (https://www.riksbank.se/en-gb/statistics/swestr/conditions-for-use-and-re-publishing/). Sample data answers each request from them, and the tests read them.",
+  "rates": {
+    "file": "rates-20260803-20261119.json.gz",
+    "date": "Thu, 19 Nov 2026 15:50:45 GMT",
+    "last_day": "2026-11-19"
+  },
+  "curves": {
+    "file": "curves-20260803-20261119.json.gz",
+    "date": "Thu, 19 Nov 2026 15:53:12 GMT",
+    "last_day": "2026-11-18"
+  },
+  "fx": {
+    "file": "fx-20260803-20261119.json.gz",
+    "date": "Thu, 19 Nov 2026 15:53:26 GMT",
+    "last_day": "2026-11-19"
+  }
+}

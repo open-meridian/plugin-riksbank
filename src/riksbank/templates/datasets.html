@@ -1,0 +1,51 @@
+{#- Datasets, at admin: the data role's (meridian/roles/data/datasets.html),
+    with the Riksbank's nuance at its blocks only, in two tabs to fit one screen
+    (as plugin-ecb's): "Served" the role's own -- the lines it could not
+    read, "Served", "Wants" and "Subjects" -- and "Records": each record and
+    currency, with its convention and the deployment's instrument for each,
+    searched and paged in one table, under the attribution the Riksbank's terms
+    ask for, its heading in its search's row. The tab row follows the page's
+    own, so it stays when the dashboard frames the page, and is left out
+    until a source is read, so the first page fits one screen too. No rate:
+    rates and figures are the reading roles'. -#}
+{% extends "meridian/roles/data/datasets.html" %}
+{% import "meridian/kit.html" as kit %}
+{% block status %}{{ kit.status({"state": state[0], "label": state[1], "detail": state[2], "at": checked_at, "at_label": "Last checked"}) }}{% endblock %}
+{% block vendor_notices %}
+{% if data.unread %}<div class="notice warn" role="status">The API stated a value the plugin could not read, not recorded: {{ data.unread|join("; ") }}</div>{% endif %}
+{% endblock %}
+{% block content %}
+{% if data.records %}
+<nav class="tabs" aria-label="Datasets sections">
+{% for name, title in tabs.items() %}
+<a class="tab{% if name == tab %} on{% endif %}" href="?tab={{ name }}"{% if name == tab %} aria-current="page"{% endif %}>{{ title }}</a>
+{% endfor %}
+</nav>
+{% endif %}
+{% if tab == "records" and data.records %}
+<section class="panel">
+<form class="filters" method="get" role="search">
+<h2>Records</h2>
+<input type="hidden" name="tab" value="records">
+<input type="search" name="q" value="{{ query }}" placeholder="Search records" aria-label="Search records by code or name">
+<button>Search</button>{% if query %} <a class="wide-only" href="?tab=records">Clear</a>{% endif %}
+<span class="muted wide-only">{{ shown|length }} of {{ data.records|length }}. Source: Sveriges Riksbank</span></form>
+{% if shown %}
+<om-pager>
+<table class="one-line">
+<thead><tr><th>Code</th><th class="wide-only">Name</th><th class="wide-only">Recorded as</th><th>Instrument</th><th class="more"><span class="visually-hidden">Details</span></th></tr></thead>
+<tbody>
+{% for r in shown %}
+<tr data-code="{{ r.code }}"><td><code>{{ r.code }}</code></td><td class="wide-only">{{ r.name }}</td><td class="wide-only">{{ r.recorded_as }} in {{ r.dataset }}</td><td>{% if r.instrument_id %}<code>{{ r.instrument_id }}</code>{% else %}<span class="badge warn">{{ r.miss or "not yet resolved" }}</span>{% endif %}</td><td class="more"><details class="row-detail" name="records"><summary aria-label="Details of {{ r.code }}">…</summary><div class="row-detail-pop"><h3>{{ r.name }}</h3><dl><dt>Code</dt><dd><code>{{ r.code }}</code></dd><dt>Recorded as</dt><dd>{{ r.recorded_as }}, in the dataset {{ r.dataset }}</dd><dt>Convention</dt><dd>{{ r.convention or "None" }}</dd><dt>Latest day recorded</dt><dd>{{ (r.latest_day|day) if r.latest_day else "None yet" }}</dd><dt>The deployment's instrument</dt><dd>{% if r.instrument_id %}<code>{{ r.instrument_id }}</code>{% elif r.miss == "not carried" %}Not asked: read and not recorded{% else %}None: {{ r.miss or "not yet resolved" }}; its values wait until the deployment holds it{% endif %}</dd></dl></div></details></td></tr>
+{% endfor %}
+</tbody>
+</table>
+</om-pager>
+{% else %}
+<div class="empty-state"><strong>No record matches "{{ query }}"</strong><p>Search by a record's code, a currency's ISO code or a name.</p></div>
+{% endif %}
+</section>
+{% else %}
+{{ super() }}
+{% endif %}
+{% endblock %}

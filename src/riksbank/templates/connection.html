@@ -1,0 +1,31 @@
+{#- Connection, at admin: the data role's (meridian/roles/data/connection.html),
+    with the Riksbank's nuance at its blocks only -- the head's status, and
+    "Sources", a tab of its own to keep each to one screen (as plugin-ecb's),
+    one line per source drawn as the role's fact rows: the rates, the
+    government bond yields and the exchange rates, each row's detail saying
+    where it reads, when the Riksbank publishes, and whether its answers are kept. The tab row follows the
+    page's own, so it stays when the dashboard frames the page. No rate:
+    rates and figures are the reading roles'. -#}
+{% extends "meridian/roles/data/connection.html" %}
+{% import "meridian/kit.html" as kit %}
+{% block status %}{{ kit.status({"state": data.state, "label": data.said, "detail": detail, "at": data.checked_at, "at_label": "Last checked"}) }}{% endblock %}
+{% block content %}
+<nav class="tabs" aria-label="Connection sections">
+{% for name, title in views.items() %}
+<a class="tab{% if name == view %} on{% endif %}" href="?tab={{ name }}"{% if name == view %} aria-current="page"{% endif %}>{{ title }}</a>
+{% endfor %}
+</nav>
+{% if view == "sources" %}
+<section class="panel">
+<h2>Sources</h2>
+<table class="one-line">
+<tbody>
+{% for s in data.sources %}
+<tr data-source="{{ s.kind }}"><th scope="row">{{ short[s.kind] }}</th><td>{{ s.state }}{% if s.last_release %}, last {{ s.last_release|day }}{% elif s.state != "Pulled when wanted" %}, none yet{% endif %}<span class="hint wide-only">{{ (", " ~ s.calls ~ " calls") }}</span></td><td class="more"><details class="row-detail" name="sources"><summary aria-label="Details of {{ s.source }}">…</summary><div class="row-detail-pop"><h3>{{ s.source }}</h3><dl><dt>Dataset</dt><dd><code>{{ s.dataset }}</code></dd><dt>Reads</dt><dd>{{ s.reads or data.source }}</dd><dt>State</dt><dd>{{ s.state }}</dd><dt>Latest day</dt><dd>{{ (s.last_release|day) if s.last_release else "Not yet" }}</dd><dt>Published</dt><dd>{% if s.kind == "rates" %}SWESTR, its averages and index state theirs; the policy rate none{% else %}The Riksbank states no time on a value{% endif %}</dd><dt>When</dt><dd>{{ s.history }}</dd><dt>Calls</dt><dd>{{ s.calls }}</dd><dt>Last error</dt><dd>{{ s.last_error or "None" }}</dd><dt>Answers kept</dt><dd>{% if s.kind != "curves" %}{{ data.responses_kept }}{% if data.kept_for %}, {{ data.kept_for }}{% endif %}{% else %}None: served, not kept{% endif %}</dd></dl></div></details></td></tr>
+{% endfor %}
+</tbody></table>
+</section>
+{% else %}
+{{ super() }}
+{% endif %}
+{% endblock %}
