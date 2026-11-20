@@ -8,7 +8,7 @@ SWESTR and SWEA, and holds the `data` role, a data plugin. This is release
 0.1.0, a draft for the product owner. How to set it up and use it is in
 [docs/](docs/README.md).
 
-It is built on the SDK it pins, `open-meridian==0.37.0` (contract 30).
+It is built on the SDK it pins, `open-meridian==0.37.1` (contract 30).
 
 ## What it records
 
