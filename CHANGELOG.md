@@ -1,10 +1,5 @@
 # Changelog
 
-## 0.1.1
-
-SDK 0.37.0: waits for a lost sidecar; its storage is read once registered,
-on an instance run as shards or with a standby pod the shard's own folder.
-
 ## 0.1.0
 
 On open-meridian 0.36.0, contract 30, on core aae501d's harness. The
@@ -38,3 +33,8 @@ owner's to approve.
 - **Pages:** the data role's Connection (with Sources) and Datasets (with
   Records).
 - **Sample data:** the Riksbank's answers as received on 2026-11-19.
+
+SDK 0.37.0: waits for a lost sidecar; its storage is read once registered,
+on an instance run as shards or with a standby pod the shard's own folder.
+
+SDK 0.37.1: a raw record kept from two threads at once waits instead of being dropped.
